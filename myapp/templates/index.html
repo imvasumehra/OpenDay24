@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload App</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <h1>File Upload App</h1>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput">
+        <input type="button" value="Upload" onclick="uploadFile()">
+    </form>
+    
+    <div id="resultMessage"></div>
+
+    <script>
+        function uploadFile() {
+            var formData = new FormData();
+            formData.append('file', $('#fileInput')[0].files[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: '/upload',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#resultMessage').text(response.message);
+                },
+                error: function(error) {
+                    console.log(error);
+                    $('#resultMessage').text("Error uploading the file.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
